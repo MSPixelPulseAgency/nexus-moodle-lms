@@ -14,8 +14,13 @@ function local_nexusbranding_before_standard_html_head() {
         )
     );
 
+    $jsrevision = filemtime(__DIR__ . '/js/nexus.js');
+
     $PAGE->requires->js(
-        '/local/nexusbranding/js/nexus.js',
+        new moodle_url(
+            '/local/nexusbranding/js/nexus.js',
+            ['v' => $jsrevision]
+        ),
         true
     );
 

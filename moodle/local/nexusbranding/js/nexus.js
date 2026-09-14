@@ -3,6 +3,9 @@
 
     const ORIGIN = window.location.origin;
     const BASE = `${ORIGIN}/local/nexusbranding`;
+    const BRAND_ASSET_REVISION = '20260914-official';
+    const BRAND_LOGO_URL =
+        `${BASE}/pix/logo.png?v=${BRAND_ASSET_REVISION}`;
 
     const HOME_URL = `${ORIGIN}/`;
     const LOGIN_URL = `${ORIGIN}/login/index.php`;
@@ -354,7 +357,7 @@
 
         brand.innerHTML = `
             <img
-                src="${BASE}/pix/logo.png"
+                src="${BRAND_LOGO_URL}"
                 alt="Nexus Education Private School"
             >
 
@@ -456,7 +459,7 @@ function installNexusFooter() {
                 <div class="nexus-footer-rich__brand">
 
                     <img
-                        src="${BASE}/pix/logo.png"
+                        src="${BRAND_LOGO_URL}"
                         alt="Nexus Education Private School"
                         class="nexus-footer-rich__logo"
                     >
