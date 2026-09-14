@@ -5276,3 +5276,17 @@ body#page-site-index .carousel-item {
 }
 
 /* NEXUS-CROSS-BROWSER-VIDEO-AUDIO-CSS-END */
+
+/* NEXUS-LOGIN-DUPLICATE-LOGO-REMOVAL-START */
+
+/*
+ * Keep the compact Nexus brand above the portal heading, but remove Moodle's
+ * second site-logo block so the login form follows the introduction naturally.
+ */
+body.nexus-login-page
+.login-container
+#loginlogo {
+    display: none !important;
+}
+
+/* NEXUS-LOGIN-DUPLICATE-LOGO-REMOVAL-END */
