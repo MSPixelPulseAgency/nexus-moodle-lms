@@ -137,6 +137,22 @@ docker compose exec moodle php admin/cli/purge_caches.php
 
 Do not overwrite Moodle core or run a version upgrade without creating a backup. The backup includes the exact application volume, so it captures installed themes/plugins alongside core code.
 
+## MHF4U starter provisioning
+
+`scripts/provision-mhf4u-starter.php` idempotently configures the existing `MHF4U` course, its original starter lessons and activities, the requested staff/student accounts, role assignments, site profile, and Nexus brand files. It refuses to run unless exactly one course uses the `MHF4U` short name and it never contains or logs passwords.
+
+Run a dry check in the local container first:
+
+```bash
+docker compose cp scripts/provision-mhf4u-starter.php moodle:/tmp/provision-mhf4u-starter.php
+docker compose cp scripts/mhf4u-starter-content.php moodle:/tmp/mhf4u-starter-content.php
+docker compose exec -T \
+  -e NEXUS_MHF4U_CONTENT=/tmp/mhf4u-starter-content.php \
+  moodle php /tmp/provision-mhf4u-starter.php --dry-run
+```
+
+The live run requires `NEXUS_PASSWORD_RUSHAL`, `NEXUS_PASSWORD_RADHIKA`, `NEXUS_PASSWORD_JAINAM`, `NEXUS_PASSWORD_ADLER`, `NEXUS_PASSWORD_TEACHER`, and `NEXUS_PASSWORD_STUDENT` in the process environment. Supply them from an approved private source only. Do not save those values in this repository, command history, deployment logs, or public hosting directories. Create and verify a complete live snapshot before provisioning.
+
 ## Backups and local restore
 
 Create a complete timestamped export while the stack is running:
