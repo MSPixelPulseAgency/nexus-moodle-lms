@@ -418,8 +418,6 @@
         boot();
     }
 
-})();
-
 /* ==========================================================
    NEXUS PREMIUM FOOTER
    ========================================================== */
@@ -575,6 +573,8 @@ function installNexusFooter() {
         footer
     );
 }
+
+})();
 
 /* NEXUS-HOMEPAGE-VIDEO-SLIDE-START */
 (function () {
