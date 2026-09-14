@@ -1,0 +1,17 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block dependency trees, repository metadata, development manifests,
+    # upgrade notes, database schemas, and test fixtures from direct HTTP
+    # access. Moodle can still load these files internally when required.
+    RewriteRule (^|/)(vendor|node_modules)(/|$) - [R=404,L,NC]
+    RewriteRule (^|/)\.(?!well-known(?:/|$)) - [R=404,L,NC]
+    RewriteRule ^(composer\.(json|lock)|phpunit\.xml(?:\.dist)?|UPGRADING(?:-CURRENT)?\.md)$ - [R=404,L,NC]
+    RewriteRule ^admin/environment\.xml$ - [R=404,L,NC]
+    RewriteRule ^lib/classes(?:/|$) - [R=404,L,NC]
+    RewriteRule (^|/)db/install\.xml$ - [R=404,L,NC]
+    RewriteRule (^|/)(?:readme(?:_moodle)?\.(?:txt|md)|upgrade\.txt|UPGRADING(?:-CURRENT)?\.md)$ - [R=404,L,NC]
+    RewriteRule (^|/)tests/(behat|fixtures)(/|$) - [R=404,L,NC]
+</IfModule>

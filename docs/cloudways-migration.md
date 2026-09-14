@@ -77,7 +77,20 @@ Also retain the current `.env` in a password manager or another approved secret 
    php admin/cli/purge_caches.php
    ```
 
-9. Keep the production site in maintenance mode until database access, file uploads, cron, Redis, outgoing mail, SSL, and administrator login are verified.
+9. On Cloudways Hybrid Stack, install the production root rules before the
+   public-path security check:
+
+   ```bash
+   cp deployment/cloudways-moodle.htaccess /path/to/moodle/.htaccess
+   ```
+
+   These rules disable directory listings and return `404` for source-only
+   Behat and fixture files. Re-run `admin/cli/checks.php --type=security`
+   after installation. If the Cloudways front proxy serves static source files
+   before Apache, add equivalent application Web Rules or make the exact files
+   named by Moodle's public-path check unreadable by the web-server user. Keep
+   `config.php` read-only in production (for example, mode `0440`).
+10. Keep the production site in maintenance mode until database access, file uploads, cron, Redis, outgoing mail, SSL, and administrator login are verified.
 
 ## Required verification before cutover
 
