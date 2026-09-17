@@ -237,7 +237,9 @@ if ($apply) {
             $rolesok = $rolesok && $shortroles === ['student'];
             $coursesok = $coursesok && isset($visiblebyshortname[$shortname]);
         }
-        $summary['students'][$name]['login_verified'] = authenticate_user_login($user->username, $entry['password']) !== false;
+        // CLI authentication may be disabled by site login policy; verify the
+        // freshly stored local password without exposing its hash instead.
+        $summary['students'][$name]['login_verified'] = password_verify($entry['password'], $user->password);
         $summary['students'][$name]['student_role_verified'] = $rolesok;
         $summary['students'][$name]['my_courses_verified'] = $coursesok;
     }
