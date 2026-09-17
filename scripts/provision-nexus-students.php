@@ -29,6 +29,16 @@ $mapping = [
     'Eknoor' => ['ENG4U', 'SPH4U'],
     'Aman' => ['MHF4U', 'ENG4U'],
 ];
+$lastnames = [
+    'Muqhwwa' => 'Rahman',
+    'Fatima' => 'El-Sayed',
+    'Suban' => 'Gurung',
+    'Mohamed' => 'Diallo',
+    'Isma' => 'Abdi',
+    'Kabir' => 'Singh',
+    'Eknoor' => 'Kaur',
+    'Aman' => 'Patel',
+];
 
 echo 'STABLE_MAPPING ' . json_encode($mapping, JSON_UNESCAPED_SLASHES) . PHP_EOL;
 
@@ -75,7 +85,7 @@ function nexus_password(string $username): string {
     return strtoupper($username[0]) . substr($username, 1) . '@2026';
 }
 
-function nexus_safe_identity(string $name): array {
+function nexus_safe_identity(string $name, string $lastname): array {
     global $CFG, $DB;
     $base = strtolower($name);
     $expectedemail = $base . '@nexuseps.com';
@@ -88,8 +98,9 @@ function nexus_safe_identity(string $name): array {
 
     $candidate = $byusername ?: $byemail;
     if ($candidate) {
-        $namematches = strtolower(trim($candidate->firstname . ' ' . $candidate->lastname)) === strtolower($name)
-            || strtolower(trim($candidate->firstname)) === strtolower($name);
+        $namematches = strtolower(trim($candidate->firstname . ' ' . $candidate->lastname))
+                === strtolower($name . ' ' . $lastname)
+            || (trim($candidate->lastname) === '' && strtolower(trim($candidate->firstname)) === strtolower($name));
         $emailmatches = strtolower($candidate->email) === $expectedemail;
         if (!$namematches || !$emailmatches) {
             $candidate = null;
@@ -124,7 +135,7 @@ function nexus_safe_identity(string $name): array {
         'username' => $username,
         'password' => nexus_password($username),
         'firstname' => $name,
-        'lastname' => '',
+        'lastname' => $lastname,
         'email' => $email,
         'city' => 'Toronto',
         'country' => 'CA',
@@ -138,7 +149,7 @@ function nexus_safe_identity(string $name): array {
 
 $planned = [];
 foreach ($mapping as $name => $shortnames) {
-    [$user, $create, $password] = nexus_safe_identity($name);
+    [$user, $create, $password] = nexus_safe_identity($name, $lastnames[$name]);
     if (!$create && is_siteadmin((int)$user->id)) {
         throw new RuntimeException("Refusing to use site administrator account {$user->username}.");
     }
@@ -187,6 +198,15 @@ if ($apply) {
         }
         if ((int)$user->mnethostid !== (int)$CFG->mnet_localhost_id) {
             throw new RuntimeException("Refusing to convert remote account {$user->username} to a local account.");
+        }
+
+        $expectedlastname = $lastnames[$name];
+        if (trim($user->lastname) === '') {
+            $user->lastname = $expectedlastname;
+            user_update_user($user, false, false);
+            $user = $DB->get_record('user', ['id' => $user->id], '*', MUST_EXIST);
+        } elseif (strcasecmp(trim($user->lastname), $expectedlastname) !== 0) {
+            throw new RuntimeException("Refusing to replace an existing surname for {$user->username}.");
         }
 
         // Set the local password explicitly after creation so verification
