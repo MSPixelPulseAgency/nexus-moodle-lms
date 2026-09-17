@@ -76,7 +76,7 @@ function nexus_password(string $username): string {
 }
 
 function nexus_safe_identity(string $name): array {
-    global $DB;
+    global $CFG, $DB;
     $base = strtolower($name);
     $expectedemail = $base . '@nexuseps.com';
     $byusername = nexus_lookup_ci('username', $base);
@@ -120,6 +120,7 @@ function nexus_safe_identity(string $name): array {
     $user = (object)[
         'auth' => 'manual',
         'confirmed' => 1,
+        'mnethostid' => (int)$CFG->mnet_localhost_id,
         'username' => $username,
         'password' => nexus_password($username),
         'firstname' => $name,
@@ -165,16 +166,27 @@ if ($apply) {
         if ($entry['create']) {
             $user->id = user_create_user($user, true, false);
             $user = $DB->get_record('user', ['id' => $user->id], '*', MUST_EXIST);
-            // Set the local password explicitly after creation so verification
-            // is independent of user_create_user() password handling.
-            update_internal_user_password($user, $entry['password']);
             $summary['accounts_created']++;
             $status = 'CREATED';
         } else {
-            update_internal_user_password($user, $entry['password']);
             $summary['existing_accounts_reused']++;
             $status = 'EXISTING';
         }
+
+        // Accounts created by this script must belong to Moodle's local MNet
+        // host. Older script runs left this as 0, which made otherwise valid
+        // local credentials fail at the web login boundary.
+        if ((int)$user->mnethostid === 0) {
+            $user->mnethostid = (int)$CFG->mnet_localhost_id;
+            user_update_user($user, false, false);
+            $user = $DB->get_record('user', ['id' => $user->id], '*', MUST_EXIST);
+        } elseif ((int)$user->mnethostid !== (int)$CFG->mnet_localhost_id) {
+            throw new RuntimeException("Refusing to convert remote account {$user->username} to a local account.");
+        }
+
+        // Set the local password explicitly after creation so verification
+        // is independent of user_create_user() password handling.
+        update_internal_user_password($user, $entry['password']);
         $entry['user'] = $user;
 
         foreach ($entry['shortnames'] as $shortname) {
@@ -237,9 +249,8 @@ if ($apply) {
             $rolesok = $rolesok && $shortroles === ['student'];
             $coursesok = $coursesok && isset($visiblebyshortname[$shortname]);
         }
-        // CLI authentication may be disabled by site login policy; verify the
-        // freshly stored local password without exposing its hash instead.
-        $summary['students'][$name]['login_verified'] = password_verify($entry['password'], $user->password);
+        $summary['students'][$name]['login_verified'] =
+            (bool)authenticate_user_login($user->username, $entry['password'], false);
         $summary['students'][$name]['student_role_verified'] = $rolesok;
         $summary['students'][$name]['my_courses_verified'] = $coursesok;
     }
