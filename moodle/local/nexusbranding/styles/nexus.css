@@ -2201,19 +2201,22 @@ body.pagelayout-frontpage
 
 
 /*
- * Center school title independently of logo/menu/login.
+ * Keep the school title inside the navbar's flex layout.  The title is
+ * appended by nexus.js, so an explicit order keeps it between the primary
+ * navigation and user controls without competing for their coordinates.
  */
 .nexus-nav-title {
-    position: absolute;
+    position: static;
 
-    left: 50%;
-    top: 50%;
+    order: 3;
 
-    transform:
-        translate(-50%, -50%);
+    flex: 0 1 clamp(160px, 20vw, 280px);
 
-    max-width:
-        52%;
+    min-width: 0;
+
+    margin: 0 1rem;
+
+    overflow: hidden;
 
     color:
         #123c75;
@@ -2240,8 +2243,62 @@ body.pagelayout-frontpage
     white-space:
         nowrap;
 
+    text-overflow:
+        ellipsis;
+
     pointer-events:
         none;
+}
+
+
+body.pagelayout-frontpage
+.navbar-brand {
+    order: 1;
+
+    flex: 0 0 auto;
+}
+
+
+body.pagelayout-frontpage
+.primary-navigation {
+    order: 2;
+
+    min-width: 0;
+
+    flex: 1 1 auto;
+}
+
+
+body.pagelayout-frontpage
+#usernavigation {
+    order: 4;
+
+    flex: 0 0 auto;
+
+    margin-left: auto !important;
+}
+
+
+@media (max-width: 1199.98px) {
+
+    body.pagelayout-frontpage
+    .nexus-nav-title {
+        flex-basis: clamp(150px, 18vw, 220px);
+
+        margin-right: .5rem;
+        margin-left: .5rem;
+
+        font-size: clamp(0.95rem, 1.45vw, 1.15rem);
+    }
+}
+
+
+@media (max-width: 991.98px) {
+
+    body.pagelayout-frontpage
+    .nexus-nav-title {
+        display: none;
+    }
 }
 
 
