@@ -2201,104 +2201,16 @@ body.pagelayout-frontpage
 
 
 /*
- * Keep the school title inside the navbar's flex layout.  The title is
- * appended by nexus.js, so an explicit order keeps it between the primary
- * navigation and user controls without competing for their coordinates.
+ * Moove fixes the blue secondary navigation below a fixed primary navbar.
+ * The Nexus front page intentionally keeps its white navbar in normal flow,
+ * so keep the secondary row in that same flow as well.  This reserves its
+ * real height before the Moodle page header and content begin.
  */
-.nexus-nav-title {
+body.pagelayout-frontpage
+.secondary-navigation {
     position: static;
 
-    order: 3;
-
-    flex: 0 1 clamp(160px, 20vw, 280px);
-
-    min-width: 0;
-
-    margin: 0 1rem;
-
-    overflow: hidden;
-
-    color:
-        #123c75;
-
-    font-size:
-        clamp(
-            1rem,
-            1.55vw,
-            1.32rem
-        );
-
-    font-weight:
-        700;
-
-    line-height:
-        1.15;
-
-    letter-spacing:
-        -0.02em;
-
-    text-align:
-        center;
-
-    white-space:
-        nowrap;
-
-    text-overflow:
-        ellipsis;
-
-    pointer-events:
-        none;
-}
-
-
-body.pagelayout-frontpage
-.navbar-brand {
-    order: 1;
-
-    flex: 0 0 auto;
-}
-
-
-body.pagelayout-frontpage
-.primary-navigation {
-    order: 2;
-
-    min-width: 0;
-
-    flex: 1 1 auto;
-}
-
-
-body.pagelayout-frontpage
-#usernavigation {
-    order: 4;
-
-    flex: 0 0 auto;
-
-    margin-left: auto !important;
-}
-
-
-@media (max-width: 1199.98px) {
-
-    body.pagelayout-frontpage
-    .nexus-nav-title {
-        flex-basis: clamp(150px, 18vw, 220px);
-
-        margin-right: .5rem;
-        margin-left: .5rem;
-
-        font-size: clamp(0.95rem, 1.45vw, 1.15rem);
-    }
-}
-
-
-@media (max-width: 991.98px) {
-
-    body.pagelayout-frontpage
-    .nexus-nav-title {
-        display: none;
-    }
+    top: auto;
 }
 
 
@@ -2536,12 +2448,6 @@ body.nexus-login-page
     .navbar {
         min-height:
             62px;
-    }
-
-
-    .nexus-nav-title {
-        display:
-            none;
     }
 
 
