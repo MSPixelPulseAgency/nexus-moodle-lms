@@ -177,10 +177,15 @@ if ($apply) {
         // host. Older script runs left this as 0, which made otherwise valid
         // local credentials fail at the web login boundary.
         if ((int)$user->mnethostid === 0) {
-            $user->mnethostid = (int)$CFG->mnet_localhost_id;
-            user_update_user($user, false, false);
+            $DB->set_field(
+                'user',
+                'mnethostid',
+                (int)$CFG->mnet_localhost_id,
+                ['id' => (int)$user->id, 'mnethostid' => 0]
+            );
             $user = $DB->get_record('user', ['id' => $user->id], '*', MUST_EXIST);
-        } elseif ((int)$user->mnethostid !== (int)$CFG->mnet_localhost_id) {
+        }
+        if ((int)$user->mnethostid !== (int)$CFG->mnet_localhost_id) {
             throw new RuntimeException("Refusing to convert remote account {$user->username} to a local account.");
         }
 
