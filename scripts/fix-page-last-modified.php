@@ -21,7 +21,9 @@ $pages = array_filter(
     $DB->get_records('page', null, 'id', 'id,course,name,displayoptions,timemodified,content'),
     static function(stdClass $page): bool {
         $options = @unserialize((string)$page->displayoptions);
-        return is_array($options) && !empty($options['printlastmodified']);
+        return !is_array($options)
+            || !isset($options['printlastmodified'])
+            || !empty($options['printlastmodified']);
     }
 );
 $before = [];
@@ -53,7 +55,9 @@ $remaining = count(array_filter(
     $DB->get_records('page', null, 'id', 'id,displayoptions'),
     static function(stdClass $page): bool {
         $options = @unserialize((string)$page->displayoptions);
-        return is_array($options) && !empty($options['printlastmodified']);
+        return !is_array($options)
+            || !isset($options['printlastmodified'])
+            || !empty($options['printlastmodified']);
     }
 ));
 

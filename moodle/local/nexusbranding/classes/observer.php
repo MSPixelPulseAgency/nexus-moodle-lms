@@ -38,7 +38,7 @@ final class observer {
         if (!is_array($displayoptions)) {
             $displayoptions = [];
         }
-        if (empty($displayoptions['printlastmodified'])) {
+        if (isset($displayoptions['printlastmodified']) && empty($displayoptions['printlastmodified'])) {
             return;
         }
 

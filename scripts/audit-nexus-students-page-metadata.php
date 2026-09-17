@@ -69,7 +69,9 @@ foreach ($courses as $shortname => $course) {
         'total' => count($pages),
         'showing_last_modified' => count(array_filter($pages, static function(stdClass $page): bool {
             $options = @unserialize((string)$page->displayoptions);
-            return is_array($options) && !empty($options['printlastmodified']);
+            return !is_array($options)
+                || !isset($options['printlastmodified'])
+                || !empty($options['printlastmodified']);
         })),
     ];
     if ($pages) {
@@ -111,7 +113,9 @@ echo json_encode([
         'total' => count($allpages),
         'showing_last_modified' => count(array_filter($allpages, static function(stdClass $page): bool {
             $options = @unserialize((string)$page->displayoptions);
-            return is_array($options) && !empty($options['printlastmodified']);
+            return !is_array($options)
+                || !isset($options['printlastmodified'])
+                || !empty($options['printlastmodified']);
         })),
         'by_target_course' => $pagecounts,
         'representative' => $representative,
