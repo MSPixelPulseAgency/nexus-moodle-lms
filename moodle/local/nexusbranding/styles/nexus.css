@@ -2451,7 +2451,24 @@ body.nexus-login-page
     }
 
 
-    .nexus-navbar-brand img {
+    body.pagelayout-frontpage
+    .navbar-brand {
+        display:
+            flex !important;
+
+        flex:
+            0 0 auto;
+
+        margin-right:
+            .5rem !important;
+    }
+
+
+    body.pagelayout-frontpage
+    .navbar-brand img {
+        width:
+            auto;
+
         height:
             30px !important;
     }
