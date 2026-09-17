@@ -1,0 +1,6 @@
+<?php
+declare(strict_types=1); define('CLI_SCRIPT',true);
+$root=getenv('NEXUS_MOODLE_ROOT') ?: dirname(__DIR__); require $root.'/config.php'; global $DB;
+$out=[]; $fs=get_file_storage();
+foreach([170,127] as $cid){$mods=$DB->get_records_sql('SELECT m.name,COUNT(*) n FROM {course_modules} cm JOIN {modules} m ON m.id=cm.module WHERE cm.course=? AND cm.deletioninprogress=0 GROUP BY m.name',[$cid]);$books=$DB->get_records('book',['course'=>$cid]);$chap=$DB->count_records_sql('SELECT COUNT(*) FROM {book_chapters} bc JOIN {book} b ON b.id=bc.bookid WHERE b.course=?',[$cid]);$files=0;$ext=['mp4'=>0,'pptx'=>0,'other'=>0];foreach($books as $b){$cm=$DB->get_record_sql('SELECT cm.* FROM {course_modules} cm JOIN {modules} m ON m.id=cm.module WHERE cm.course=? AND cm.instance=? AND m.name=?',[$cid,$b->id,'book']);if($cm)foreach($fs->get_area_files(context_module::instance((int)$cm->id)->id,'mod_book','chapter',false) as $f){$files++;$e=strtolower(pathinfo($f->get_filename(),PATHINFO_EXTENSION));if(isset($ext[$e]))$ext[$e]++;else $ext['other']++;}}$out[$cid]=['fullname'=>$DB->get_field('course','fullname',['id'=>$cid]),'modules'=>$mods,'books'=>count($books),'chapters'=>$chap,'book_files'=>$files,'file_extensions'=>$ext];}
+echo json_encode($out,JSON_PRETTY_PRINT).PHP_EOL;
