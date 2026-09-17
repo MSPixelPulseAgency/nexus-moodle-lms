@@ -165,6 +165,9 @@ if ($apply) {
         if ($entry['create']) {
             $user->id = user_create_user($user, true, false);
             $user = $DB->get_record('user', ['id' => $user->id], '*', MUST_EXIST);
+            // Set the local password explicitly after creation so verification
+            // is independent of user_create_user() password handling.
+            update_internal_user_password($user, $entry['password']);
             $summary['accounts_created']++;
             $status = 'CREATED';
         } else {
