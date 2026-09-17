@@ -159,7 +159,7 @@ function sbi4u_page(stdClass $course, int $section, string $idnumber, string $na
     $info = (object)[
         'modulename' => 'page', 'module' => $DB->get_field('modules', 'id', ['name' => 'page'], MUST_EXIST),
         'name' => $name, 'intro' => '', 'introformat' => FORMAT_HTML, 'content' => $html, 'contentformat' => FORMAT_HTML,
-        'display' => 0, 'printintro' => 0, 'printlastmodified' => 1, 'section' => $section, 'visible' => 1,
+        'display' => 0, 'printintro' => 0, 'printlastmodified' => 0, 'section' => $section, 'visible' => 1,
         'cmidnumber' => $idnumber, 'completion' => $completion ? COMPLETION_TRACKING_AUTOMATIC : COMPLETION_TRACKING_NONE,
         'completionview' => $completion ? 1 : 0,
     ];

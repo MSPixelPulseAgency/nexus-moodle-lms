@@ -34,7 +34,8 @@ function nexus_page(stdClass $course, int $section, string $idnumber, string $na
     $info = (object)[
         'modulename' => 'page', 'module' => $DB->get_field('modules', 'id', ['name' => 'page'], MUST_EXIST),
         'name' => $name, 'intro' => '', 'introformat' => FORMAT_HTML, 'content' => $html,
-        'contentformat' => FORMAT_HTML, 'display' => 0, 'printintro' => 0, 'section' => $section,
+        'contentformat' => FORMAT_HTML, 'display' => 0, 'printintro' => 0, 'printlastmodified' => 0,
+        'section' => $section,
         'visible' => $visible ? 1 : 0, 'cmidnumber' => $idnumber,
         'completion' => COMPLETION_TRACKING_AUTOMATIC, 'completionview' => 1,
     ];
