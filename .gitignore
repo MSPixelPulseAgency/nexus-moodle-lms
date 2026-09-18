@@ -2,9 +2,7 @@
 # Environment & Secrets
 #############################################
 
-.env
-.env.local
-.env.*.local
+.env*
 !.env.example
 
 secrets/
@@ -17,6 +15,9 @@ moodledata/
 database/
 redis/
 state/
+tmp/
+private_html/
+/moodle/config.php
 
 #############################################
 # Backups & Logs
@@ -28,15 +29,22 @@ logs/
 *.log
 *.sql
 *.sql.gz
+*.dump
 *.tar
 *.tar.gz
+*.tgz
 *.zip
+*.mbz
+*.bak
+*.pre-*
 
 #############################################
 # Dependencies
 #############################################
 
 node_modules/
+__pycache__/
+*.pyc
 
 #############################################
 # OS / IDE

@@ -1,7 +1,9 @@
 # Moodle 4.5 LTS on PHP 8.3 and Apache. All runtime state is held in named volumes.
 FROM php:8.3-apache-bookworm
 
-ARG MOODLE_REF=MOODLE_405_STABLE
+# Exact upstream revision running on Nexus production (Moodle 4.5.12+, build 20260728).
+# Override explicitly only when performing a reviewed Moodle core update.
+ARG MOODLE_REF=136359a52b388a138abaa3766eb8dbe7ec824962
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/moodle \
     MOODLE_DIR=/var/www/moodle \
@@ -30,10 +32,10 @@ RUN apt-get update \
     && a2enmod expires headers rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Download the official Moodle 4.5 stable branch during the image build. The entrypoint
+# Download the production-matched Moodle 4.5 source during the image build. The entrypoint
 # copies it to the persistent Moodle application volume only when that volume is empty.
 RUN mkdir -p "${MOODLE_SOURCE_DIR}" "${MOODLE_DIR}" "${MOODLE_DATA_DIR}" \
-    && curl -fsSL "https://github.com/moodle/moodle/archive/refs/heads/${MOODLE_REF}.tar.gz" \
+    && curl -fsSL "https://github.com/moodle/moodle/archive/${MOODLE_REF}.tar.gz" \
         -o /tmp/moodle.tar.gz \
     && tar -xzf /tmp/moodle.tar.gz --strip-components=1 -C "${MOODLE_SOURCE_DIR}" \
     && rm /tmp/moodle.tar.gz \

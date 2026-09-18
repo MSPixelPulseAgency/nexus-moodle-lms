@@ -1,0 +1,250 @@
+/* Nexus Education Private School
+   Custom Moodle theme based on Boost.
+*/
+
+:root {
+    --nexus-primary: #0b63f6;
+    --nexus-primary-dark: #0849b8;
+    --nexus-navy: #061b3a;
+    --nexus-secondary: #123a7a;
+    --nexus-background: #f4f8ff;
+    --nexus-surface: #ffffff;
+    --nexus-text: #172033;
+    --nexus-muted: #667085;
+    --nexus-border: #dce6f5;
+    --nexus-radius: 16px;
+    --nexus-shadow: 0 10px 30px rgba(6, 27, 58, 0.08);
+}
+
+body {
+    background: var(--nexus-background);
+    color: var(--nexus-text);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+/* Main navigation */
+
+.navbar {
+    min-height: 72px;
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-bottom: 1px solid var(--nexus-border);
+    box-shadow: 0 4px 20px rgba(6, 27, 58, 0.06);
+    backdrop-filter: blur(16px);
+}
+
+.navbar-brand {
+    color: var(--nexus-navy) !important;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+}
+
+.primary-navigation .navigation .nav-link {
+    color: var(--nexus-text);
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.65rem 0.9rem;
+}
+
+.primary-navigation .navigation .nav-link:hover,
+.primary-navigation .navigation .nav-link.active {
+    color: var(--nexus-primary);
+    background: rgba(11, 99, 246, 0.08);
+}
+
+/* Page content */
+
+#page {
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(11, 99, 246, 0.08),
+            transparent 28rem
+        ),
+        var(--nexus-background);
+}
+
+#page-content {
+    max-width: 1440px;
+    margin-inline: auto;
+}
+
+.page-header-headings h1,
+h1,
+h2,
+h3,
+h4 {
+    color: var(--nexus-navy);
+    letter-spacing: -0.035em;
+}
+
+/* Cards and blocks */
+
+.card,
+.block,
+.coursebox,
+.dashboard-card {
+    border: 1px solid var(--nexus-border) !important;
+    border-radius: var(--nexus-radius) !important;
+    background: var(--nexus-surface);
+    box-shadow: var(--nexus-shadow);
+}
+
+.card-header,
+.block .card-title {
+    background: transparent;
+    color: var(--nexus-navy);
+    font-weight: 700;
+}
+
+/* Buttons */
+
+.btn {
+    min-height: 44px;
+    border-radius: 11px;
+    font-weight: 650;
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background-color 160ms ease;
+}
+
+.btn-primary {
+    background: linear-gradient(
+        135deg,
+        var(--nexus-primary),
+        var(--nexus-primary-dark)
+    );
+    border-color: transparent;
+    box-shadow: 0 8px 20px rgba(11, 99, 246, 0.22);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(11, 99, 246, 0.28);
+}
+
+/* Forms */
+
+.form-control,
+.custom-select,
+.form-select,
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    min-height: 46px;
+    border: 1px solid var(--nexus-border);
+    border-radius: 11px;
+    background: #fff;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--nexus-primary);
+    box-shadow: 0 0 0 4px rgba(11, 99, 246, 0.12);
+}
+
+/* Dashboard */
+
+#page-my-index .page-header-headings h1::after {
+    content: "Your learning, progress and upcoming activities";
+    display: block;
+    margin-top: 0.45rem;
+    color: var(--nexus-muted);
+    font-size: 1rem;
+    font-weight: 450;
+    letter-spacing: normal;
+}
+
+.block_myoverview .dashboard-card {
+    overflow: hidden;
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.block_myoverview .dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(6, 27, 58, 0.13);
+}
+
+/* Course pages */
+
+.course-content ul.topics li.section,
+.course-content ul.weeks li.section {
+    margin-bottom: 1.15rem;
+    padding: 1rem;
+    border: 1px solid var(--nexus-border);
+    border-radius: var(--nexus-radius);
+    background: var(--nexus-surface);
+    box-shadow: 0 6px 20px rgba(6, 27, 58, 0.05);
+}
+
+.course-content .sectionname {
+    color: var(--nexus-navy);
+    font-weight: 750;
+}
+
+/* Login */
+
+.pagelayout-login #page {
+    min-height: 100vh;
+    background:
+        linear-gradient(
+            125deg,
+            rgba(11, 99, 246, 0.95),
+            rgba(6, 27, 58, 0.96)
+        );
+}
+
+.login-container {
+    max-width: 480px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.24);
+}
+
+/* Footer */
+
+#page-footer {
+    margin-top: 4rem;
+    background: var(--nexus-navy);
+    color: rgba(255, 255, 255, 0.82);
+}
+
+#page-footer a {
+    color: #fff;
+}
+
+/* Mobile */
+
+@media (max-width: 767.98px) {
+    .navbar {
+        min-height: 62px;
+    }
+
+    #page-content {
+        padding-inline: 0.85rem;
+    }
+
+    .card,
+    .block,
+    .coursebox,
+    .dashboard-card {
+        border-radius: 13px !important;
+    }
+
+    .login-container {
+        margin: 1rem;
+        padding: 1.35rem;
+        border-radius: 18px;
+    }
+}

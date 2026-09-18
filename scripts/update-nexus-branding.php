@@ -51,7 +51,7 @@ function nexus_update_brand_file(
 }
 
 $logo = $brandroot . '/logo.png';
-$icon = $brandroot . '/site-icon.png';
+$icon = $brandroot . '/site-icon-white-bg.png';
 
 $updated = [
     nexus_update_brand_file(
@@ -68,7 +68,7 @@ $updated = [
         'core_admin',
         'logocompact',
         $icon,
-        'nexus-brand-icon.png'
+        'nexus-brand-icon-white-bg.png'
     ),
     nexus_update_brand_file(
         'core_admin',
@@ -76,7 +76,7 @@ $updated = [
         'core_admin',
         'favicon',
         $icon,
-        'nexus-brand-icon.png'
+        'nexus-brand-icon-white-bg.png'
     ),
     nexus_update_brand_file(
         'theme_moove',
@@ -92,7 +92,7 @@ $updated = [
         'theme_moove',
         'favicon',
         $icon,
-        'nexus-brand-icon.png'
+        'nexus-brand-icon-white-bg.png'
     ),
 ];
 

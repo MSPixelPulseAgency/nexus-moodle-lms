@@ -1,0 +1,7 @@
+*.pdf binary
+*.png binary
+*.webp binary
+
+# Preserve third-party release archives byte-for-byte, including upstream whitespace.
+moodle/theme/adaptable/** -whitespace
+moodle/theme/moove/** -whitespace

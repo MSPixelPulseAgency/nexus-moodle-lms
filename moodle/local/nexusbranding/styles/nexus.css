@@ -2201,47 +2201,16 @@ body.pagelayout-frontpage
 
 
 /*
- * Center school title independently of logo/menu/login.
+ * Moove fixes the blue secondary navigation below a fixed primary navbar.
+ * The Nexus front page intentionally keeps its white navbar in normal flow,
+ * so keep the secondary row in that same flow as well.  This reserves its
+ * real height before the Moodle page header and content begin.
  */
-.nexus-nav-title {
-    position: absolute;
+body.pagelayout-frontpage
+.secondary-navigation {
+    position: static;
 
-    left: 50%;
-    top: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    max-width:
-        52%;
-
-    color:
-        #123c75;
-
-    font-size:
-        clamp(
-            1rem,
-            1.55vw,
-            1.32rem
-        );
-
-    font-weight:
-        700;
-
-    line-height:
-        1.15;
-
-    letter-spacing:
-        -0.02em;
-
-    text-align:
-        center;
-
-    white-space:
-        nowrap;
-
-    pointer-events:
-        none;
+    top: auto;
 }
 
 
@@ -2482,13 +2451,24 @@ body.nexus-login-page
     }
 
 
-    .nexus-nav-title {
+    body.pagelayout-frontpage
+    .navbar-brand {
         display:
-            none;
+            flex !important;
+
+        flex:
+            0 0 auto;
+
+        margin-right:
+            .5rem !important;
     }
 
 
-    .nexus-navbar-brand img {
+    body.pagelayout-frontpage
+    .navbar-brand img {
+        width:
+            auto;
+
         height:
             30px !important;
     }

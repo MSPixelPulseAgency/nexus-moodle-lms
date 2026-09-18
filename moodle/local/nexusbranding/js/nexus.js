@@ -44,43 +44,6 @@
     }
 
 
-    /* ==================================================
-       HOMEPAGE NAVIGATION
-       ================================================== */
-
-    function installNavTitle() {
-        if (!isHome()) {
-            return;
-        }
-
-        if (
-            document.querySelector(
-                '.nexus-nav-title'
-            )
-        ) {
-            return;
-        }
-
-        const navbar =
-            document.querySelector('.navbar');
-
-        if (!navbar) {
-            return;
-        }
-
-        const title =
-            document.createElement('div');
-
-        title.className =
-            'nexus-nav-title';
-
-        title.textContent =
-            'Nexus Education Private School';
-
-        navbar.appendChild(title);
-    }
-
-
     function fixLoginLinks() {
         if (!isHome()) {
             return;
@@ -402,7 +365,6 @@
             );
 
             preloadHeroes();
-            installNavTitle();
             fixLoginLinks();
             waitForMooveCarousel();
         installNexusFooter();

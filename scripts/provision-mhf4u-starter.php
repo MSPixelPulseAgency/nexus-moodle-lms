@@ -119,7 +119,7 @@ function nexus_ensure_page(stdClass $course, int $section, string $idnumber, str
         'contentformat' => FORMAT_HTML,
         'display' => 0,
         'printintro' => 0,
-        'printlastmodified' => 1,
+        'printlastmodified' => 0,
         'section' => $section,
         'visible' => 1,
         'cmidnumber' => $idnumber,

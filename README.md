@@ -1,6 +1,25 @@
-# Nexus Education Private School LMS — Local Development
+# Nexus Education Private School Moodle LMS
 
-This repository provides the complete free, local Docker Desktop environment for the Nexus Education Private School Moodle LMS. It runs Moodle 4.5 LTS with PHP 8.3 + Apache, MariaDB, Redis, Moodle cron, Mailpit, and phpMyAdmin on an Apple Silicon Mac.
+This repository is the source-controlled code baseline for the Nexus Education Private School Moodle LMS. Production is hosted separately on Cloudways at `https://lms.nexuseps.com`; cloning or building this repository does not connect to or change production.
+
+The production-matched baseline is Moodle `4.5.12+ (Build: 20260728)`, branch `405`. Moodle core is reproducibly fetched from the exact upstream commit pinned by `MOODLE_REF` in `Dockerfile` instead of being duplicated in Git. The repository vendors the live custom Nexus code, themes, assets, and operational source files, while retaining development and provisioning tools that are intentionally not installed in the public application root.
+
+See [Production source inventory](docs/production-source-inventory.md) for the mapped live components and intentional exclusions.
+
+## Production configuration and private data
+
+Production `config.php`, credentials, API keys, SSH material, database contents, `moodledata`, uploaded course/student files, caches, sessions, logs, backups, and temporary/generated files are intentionally excluded from Git.
+
+- Cloudways supplies production-specific database, cache, mail, path, and other secret settings outside this repository.
+- `.env.example` documents local variable names only; each environment creates its own ignored `.env`.
+- `docker/config.php` is a secret-free local template that reads values from environment variables.
+- `deployment/cloudways-moodle.htaccess` is the reviewed source template corresponding to the live web-root rules.
+
+Never replace these exclusions with a production export or commit a live `config.php`.
+
+## Local development
+
+The Docker Desktop environment runs the production-matched Moodle 4.5 source with PHP 8.3 + Apache, MariaDB, Redis, Moodle cron, Mailpit, and phpMyAdmin on an Apple Silicon Mac.
 
 No public-facing school content, student counts, or sample school details are created by this environment.
 
@@ -17,7 +36,7 @@ The installed Moodle identity is:
 - Full site name: `Nexus Education Private School`
 - Short name: `Nexus EPS`
 - Portal reference: `Nexus Learning Management System`
-- Future production URL: `https://lms.nexuseps.com`
+- Production URL: `https://lms.nexuseps.com`
 - Public website: `https://nexuseps.com`
 - Administrator username: `admin`
 - Administrator email: `mspixelpulse@gmail.com`
@@ -48,7 +67,7 @@ cp .env.example .env
 
 `generate-secrets.sh` intentionally exits if `.env` already exists. This protects a working installation from an accidental password change.
 
-The first build downloads the official Moodle `MOODLE_405_STABLE` source branch, builds PHP 8.3 extensions, then installs Moodle automatically. Subsequent starts reuse the persistent named volumes and are much faster.
+The first build downloads the exact official Moodle commit recorded in `Dockerfile`, builds PHP 8.3 extensions, then installs Moodle automatically. Subsequent starts reuse the persistent named volumes and are much faster.
 
 Check the result:
 

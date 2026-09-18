@@ -1,88 +1,56 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
 
 namespace local_nexusadminenrol;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Event observers for administrator enrolment synchronisation.
+ */
 class observer {
     /**
-     * Automatically enrol the Nexus administrator
-     * whenever a new course is created.
+     * Enrol every current site administrator into a newly created real course.
+     *
+     * @param \core\event\course_created $event
      */
-    public static function course_created(
-        \core\event\course_created $event
-    ): void {
+    public static function course_created(\core\event\course_created $event): void {
+        $courseid = (int)$event->objectid;
+        if ($courseid !== SITEID) {
+            synchroniser::sync_course($courseid);
+        }
+    }
+
+    /**
+     * Reconcile all courses when the configured site administrator list changes.
+     *
+     * @param \core\event\config_log_created $event
+     */
+    public static function config_log_created(\core\event\config_log_created $event): void {
+        $other = $event->other;
+        if (($other['name'] ?? '') === 'siteadmins'
+                && in_array(($other['plugin'] ?? ''), ['', 'core', null], true)) {
+            synchroniser::sync_all();
+        }
+    }
+
+    /**
+     * Remove obsolete tracking rows after a course is deleted.
+     *
+     * @param \core\event\course_deleted $event
+     */
+    public static function course_deleted(\core\event\course_deleted $event): void {
         global $DB;
+        $DB->delete_records('local_nexusadminenrol', ['courseid' => (int)$event->objectid]);
+    }
 
-        $courseid = (int) $event->objectid;
-
-        if ($courseid === SITEID) {
-            return;
-        }
-
-        $user = $DB->get_record(
-            'user',
-            [
-                'username' => 'admin',
-                'deleted' => 0,
-            ]
-        );
-
-        if (!$user) {
-            return;
-        }
-
-        $role = $DB->get_record(
-            'role',
-            ['shortname' => 'editingteacher']
-        );
-
-        if (!$role) {
-            return;
-        }
-
-        $manual = enrol_get_plugin('manual');
-
-        if (!$manual) {
-            return;
-        }
-
-        $course = $DB->get_record(
-            'course',
-            ['id' => $courseid],
-            '*',
-            MUST_EXIST
-        );
-
-        $manualinstance = null;
-
-        foreach (enrol_get_instances($courseid, true) as $instance) {
-            if ($instance->enrol === 'manual') {
-                $manualinstance = $instance;
-                break;
-            }
-        }
-
-        if (!$manualinstance) {
-            $instanceid = $manual->add_instance($course);
-
-            $manualinstance = $DB->get_record(
-                'enrol',
-                ['id' => $instanceid],
-                '*',
-                MUST_EXIST
-            );
-        }
-
-        if (!$DB->record_exists('user_enrolments', [
-            'enrolid' => $manualinstance->id,
-            'userid' => $user->id,
-        ])) {
-            $manual->enrol_user(
-                $manualinstance,
-                $user->id,
-                $role->id
-            );
-        }
+    /**
+     * Remove obsolete tracking rows after a user is deleted.
+     *
+     * @param \core\event\user_deleted $event
+     */
+    public static function user_deleted(\core\event\user_deleted $event): void {
+        global $DB;
+        $DB->delete_records('local_nexusadminenrol', ['userid' => (int)$event->objectid]);
     }
 }
