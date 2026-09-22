@@ -395,6 +395,8 @@ foreach ($assignments as $number => $spec) {
             'section' => $spec['section'],
             'visible' => 1,
             'cmidnumber' => $spec['idnumber'],
+            'completion' => COMPLETION_TRACKING_AUTOMATIC,
+            'completionsubmit' => 1,
         ];
         add_moduleinfo($moduleinfo, $mhf4u);
         $cm = nexusdemo_cm($mhf4u, 'assign', $spec['idnumber']);

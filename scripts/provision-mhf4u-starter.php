@@ -123,6 +123,8 @@ function nexus_ensure_page(stdClass $course, int $section, string $idnumber, str
         'section' => $section,
         'visible' => 1,
         'cmidnumber' => $idnumber,
+        'completion' => COMPLETION_TRACKING_AUTOMATIC,
+        'completionview' => 1,
     ];
     add_moduleinfo($moduleinfo, $course);
     return true;
@@ -170,6 +172,8 @@ function nexus_ensure_assignment(stdClass $course, int $section, string $idnumbe
         'section' => $section,
         'visible' => 1,
         'cmidnumber' => $idnumber,
+        'completion' => COMPLETION_TRACKING_AUTOMATIC,
+        'completionsubmit' => 1,
     ];
     add_moduleinfo($moduleinfo, $course);
     return true;
@@ -246,6 +250,8 @@ function nexus_ensure_quiz(stdClass $course, int $section, string $idnumber, str
         'section' => $section,
         'visible' => 1,
         'cmidnumber' => $idnumber,
+        'completion' => COMPLETION_TRACKING_AUTOMATIC,
+        'completionusegrade' => 1,
     ];
     $created = add_moduleinfo($moduleinfo, $course);
     return [$DB->get_record('quiz', ['id' => $created->instance], '*', MUST_EXIST), true];
